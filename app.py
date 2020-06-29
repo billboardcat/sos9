@@ -33,6 +33,7 @@ def main(username):
     st.title('SOS 9!')
     st.header('Schools and Colleges Challenge - Team 9')
     st.subheader('Hello, ' + username + '!')
+    st.title('This is Erik\'s test ')
 
     st.sidebar.subheader('Get started by uploading your student data:')
     file = st.sidebar.file_uploader('Upload a CSV file, max 200 MB', type='csv')
