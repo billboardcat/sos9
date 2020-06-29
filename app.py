@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-
+import pandas as pd
 
 # is_authenticated: checks for a valid password
 # Args:     password -- string
@@ -35,7 +35,10 @@ def main(username):
     st.subheader('Hello, ' + username + '!')
 
     st.sidebar.subheader('Get started by uploading your student data:')
-    st.sidebar.file_uploader('Upload a CSV file, max 200 MB', type='csv')
+    file = st.sidebar.file_uploader('Upload a CSV file, max 200 MB', type='csv')
+    if file is not None:
+        my_DF = pd.read_csv(file)
+        st.write(my_DF)
 
 # Code to simulate a login page.
 # Code and relevant functions implemented from: https://discuss.streamlit.io/t/user-authentication/612/7
