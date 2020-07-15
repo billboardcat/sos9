@@ -1,52 +1,52 @@
 import streamlit as st
 import os
 import pandas as pd
-
-# is_authenticated: checks for a valid password
-# Args:     password -- string
-# Return:   bool
-def is_authenticated(password):
-    return password == "123"
+from SessionState import get
 
 
-# generate_login_block: creates the blocks for the login page
-def generate_login_block():
-    block1 = st.empty()
-    block2 = st.empty()
-
-    return block1, block2
+session_state = get(username='', password='', is_active=False)
+default_pwd = '123'
 
 
-# clean_blocks: clears StreamLit blocks in a list; currently used to clear login fields
-def clean_blocks(blocks):
-    for block in blocks:
-        block.empty()
-
-
-# login: gets the username and password from the client
-def login(blocks):
-    return blocks[0].text_input('Username'), blocks[1].text_input('Password', type='password')
-
-
-def main(username):
-    st.balloons()
-    st.title('SOS 9!')
-    st.header('Schools and Colleges Challenge - Team 9')
-    st.subheader('Hello, ' + username + '!')
-
+def main():
+    st.subheader('Hello, ' + session_state.username + '!')
     st.sidebar.subheader('Get started by uploading your student data:')
     file = st.sidebar.file_uploader('Upload a CSV file, max 200 MB', type='csv')
     if file is not None:
         my_DF = pd.read_csv(file)
         st.write(my_DF)
 
-# Code to simulate a login page.
-# Code and relevant functions implemented from: https://discuss.streamlit.io/t/user-authentication/612/7
-login_blocks = generate_login_block()
-username, password = login(login_blocks)
 
-if is_authenticated(password):
-    clean_blocks(login_blocks)
-    main(username)
-elif password:
-    st.info("Please enter a valid password")
+if session_state.password != default_pwd:
+    # This is a cleaner implementation of theoretical user authentication & session model than what was previously
+    # implemented. This also prevents StreamLit from rerunning the entire script when interacting with the web app.
+    # Credit:
+    # Code below modified from nth-attempt's post https://discuss.streamlit.io/t/user-authentication/612/16
+    # 'SessionState.py' taken from https://gist.github.com/tvst/036da038ab3e999a64497f42de966a92
+
+    st.title('SOS 9!')
+    st.header('Schools and Colleges Challenge - Team 9')
+    if session_state.is_active: # User has already logged in and is interacting with webapp, bypass login sequence
+        main()
+    else:   # User has not logged in yet, run log in sequence
+        usr_placeholder = st.empty()
+        pwd_placeholder = st.empty()
+        btn_placeholder = st.empty()
+        usr = usr_placeholder.text_input("Username:", value="")
+        pwd = pwd_placeholder.text_input("Password:", value="", type="password")
+        is_pressed = btn_placeholder.button("Login")
+        session_state.username = usr
+        print(session_state.is_active)
+        if len(usr) == 0:
+            session_state.username = "Guest"
+        if is_pressed:  # When login button is pressed
+            session_state.is_active = True  # Mark the session as active
+            usr_placeholder.empty()         # Clear the username/password fields and login button
+            pwd_placeholder.empty()
+            btn_placeholder.empty()
+            st.balloons()
+            main()
+        else:
+            st.info("Please login before continuing")
+else:
+    main()
