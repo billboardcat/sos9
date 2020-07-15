@@ -1,7 +1,7 @@
 # sos9
 For the TechPoint S.O.S. Challenge - Schools and Colleges - Team 9
 
-##Running this application
+## Running this application
 First install the Streamlit framework: 
 `pip install streamlit`
 
