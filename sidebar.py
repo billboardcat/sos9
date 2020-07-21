@@ -6,9 +6,10 @@ def gen_sidebar():
     # Generate sidebar widgets
     st.sidebar.header("Step 1 - Upload your student data:")
     file = st.sidebar.file_uploader("Upload a CSV file, max 200 MB", type='csv')
+    my_DF = None
     if file is not None:
         my_DF = pd.read_csv(file)
-        st.write(my_DF)
+        # st.write(my_DF)
 
     st.sidebar.header("Step 2 - Tell us more about your course's structure:")
 
@@ -71,4 +72,4 @@ def gen_sidebar():
     course_desc['course_structure'] = st.sidebar.selectbox(label='Course organization', options=(
     'Traditional lecture', 'Team-based lecture', 'Reverse classroom', 'Other'))
 
-    return course_desc
+    return course_desc, my_DF
