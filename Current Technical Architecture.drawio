@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2020-07-22T21:35:31.311Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="dP-6zAAmgT2vC00zri8C" version="13.5.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-07-22T21:36:07.729Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="-fkDdefeXy2S5OVkbWQ0" version="13.5.1" type="github">
   <diagram id="S--r0rCahtqjIh3wsLop" name="Page-1">
     <mxGraphModel dx="584" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="9EJtn_C2GVnp_4WDPb4I-4" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;labelBackgroundColor=#CCCCCC;" vertex="1" parent="1">
+        <mxCell id="9EJtn_C2GVnp_4WDPb4I-4" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;labelBackgroundColor=#808080;fillColor=#E6E6E6;" vertex="1" parent="1">
           <mxGeometry x="520" y="240" width="200" height="200" as="geometry" />
         </mxCell>
         <mxCell id="9EJtn_C2GVnp_4WDPb4I-3" value="&lt;font style=&quot;font-size: 18px&quot;&gt;AWS&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1" vertex="1" parent="1">
