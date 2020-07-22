@@ -1,8 +1,6 @@
 import streamlit as st
-import os
 import pandas as pd
 from SessionState import get
-import sidebar
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,23 +17,7 @@ def main():
     if not session_state.step1_done:
         start_placeholder.info("Get started by uploading your course data in the sidebar")
 
-    # Previous code:
-    # start_placeholder = st.empty()
-    # if not session_state.step1_done:
-    #     start_placeholder.info("Get started by answering some questions about your course in the sidebar")
-    #
-    # course_desc, course_DF = sidebar.gen_sidebar()
-    # if course_DF is not None:
-    #     session_state.step1_done = True
-    #     start_placeholder.empty()
-    #     st.write(course_DF)
-    #
-    # Diagnostic print used to make sure that the course_desc dictionary isn't resetting between interactions
-    # print()
-    # for k, v in course_desc.items():
-    #     print(k, v)
-
-    st.sidebar.header("Step 1 - Upload the course data:")
+    st.sidebar.header("Upload your course data:")
     file = st.sidebar.file_uploader("Upload a CSV file, max 200 MB", type='csv')
     if file is not None:
         session_state.step1_done = True
@@ -72,18 +54,37 @@ def main():
 
         st.header("Attendance and Assignment Grades")
         st.subheader("Correlation coefficient: {:.4f}".format(corr))
-        if corr > 0.9:
-            st.subheader('There is likely a very high positive correlation between attendance and assignment grades')
-        if 0.9 > corr >= 0.7:
-            st.subheader('There is likely a high positive correlation between attendance and assignment grades')
-        if 0.7 > corr >= 0.5:
-            st.subheader('There is likely moderate positive correlation between attendance and assignment grades')
-        if 0.5 > corr >= 0.3:
-            st.subheader('There is likely slight positive correlation between attendance and assignment grades')
-        if 0.3 > corr >= 0.0:
-            st.subheader('There is likely no correlation between attendance and assignment grades')
-        if corr < 0.0:
-            st.subheader('There is likely a negative correlation between attendance and assignment grades')
+        # if corr > 0.9:
+        #     st.subheader('There is likely a very high positive correlation between attendance and assignment grades')
+        # if 0.9 > corr >= 0.7:
+        #     st.subheader('There is likely a high positive correlation between attendance and assignment grades')
+        # if 0.7 > corr >= 0.5:
+        #     st.subheader('There is likely moderate positive correlation between attendance and assignment grades')
+        # if 0.5 > corr >= 0.3:
+        #     st.subheader('There is likely slight positive correlation between attendance and assignment grades')
+        # if 0.3 > corr >= 0.0:
+        #     st.subheader('There is likely no correlation between attendance and assignment grades')
+        # if corr < 0.0:
+        #     st.subheader('There is likely a negative correlation between attendance and assignment grades')
+
+        if corr > 0.3:
+            st.subheader("It is very likely that improving lecture attendance will result in improved grades. "
+                         "Students with poor attendance are shown in the sidebar, "
+                         "consider reaching out to them and help remove barriers discouraging them from attending.")
+            top5raw = myDF.sort_values('attendanceCount')[['First Name', 'Last Name']].head(5)
+            top5raw['Names'] = top5raw['First Name'] + ' ' + top5raw['Last Name']
+            top5names = ', '.join(list(top5raw['Names']))
+            # print(top5names)
+            st.sidebar.markdown("---")
+            st.sidebar.markdown("<h2 style='color:maroon;'>Students to pay attention to</h2>", unsafe_allow_html=True)
+            st.sidebar.subheader("Students with low attendance:")
+            st.sidebar.markdown(top5names)
+        elif 0.3 >= corr >= -0.3:
+            st.subheader("There is insufficient data to determine if lecture attendance improves student's grades.")
+        else:
+            st.subheader("It appears students who frequently attend lectures tend to have worse grades "
+                         "than those who don't. This is a very complicated issue, "
+                         "but start by reviewing your curriculum, as well as the format and length of your lectures.")
 
         # Q4
         st.markdown("---")
@@ -96,18 +97,39 @@ def main():
         corr = float(q4DF.corr().iloc[0, 1])
         st.subheader("Correlation Coefficient: {:.4f}".format(corr))
 
-        if corr > 0.9:
-            st.subheader('There is likely a very high positive correlation between attendance and lecture engagement')
-        if 0.9 > corr >= 0.7:
-            st.subheader('There is likely a high positive correlation between attendance and lecture engagement')
-        if 0.7 > corr >= 0.5:
-            st.subheader('There is likely moderate positive correlation between attendance and lecture engagement')
-        if 0.5 > corr >= 0.3:
-            st.subheader('There is likely slight positive correlation between attendance and lecture engagement')
-        if 0.3 > corr >= 0.0:
-            st.subheader('There is likely no correlation between attendance and lecture engagement')
-        if corr < 0.0:
-            st.subheader('There is likely a negative correlation between attendance and lecture engagement')
+        # if corr > 0.9:
+        #     st.subheader('There is likely a very high positive correlation between attendance and lecture engagement')
+        # if 0.9 > corr >= 0.7:
+        #     st.subheader('There is likely a high positive correlation between attendance and lecture engagement')
+        # if 0.7 > corr >= 0.5:
+        #     st.subheader('There is likely moderate positive correlation between attendance and lecture engagement')
+        # if 0.5 > corr >= 0.3:
+        #     st.subheader('There is likely slight positive correlation between attendance and lecture engagement')
+        # if 0.3 > corr >= 0.0:
+        #     st.subheader('There is likely no correlation between attendance and lecture engagement')
+        # if corr < 0.0:
+        #     st.subheader('There is likely a negative correlation between attendance and lecture engagement')
+
+        if corr > 0.3:
+            st.subheader("It is very likely that improving class participation will result in improved grades. "
+                         "Students with poor class participation are shown in the sidebar. "
+                         "Consider engaging with these students during lecture "
+                         "to ensure they are following with the instruction")
+        elif 0.3 >= corr >= -0.3:
+            st.subheader("There is insufficient data to determine if lecture engagement improves student's grades")
+        else:
+            st.subheader("It appears students that engage more in lectures receive lower grades than their peers. "
+                         "This is a very complicated issue, but you should review the curriculum "
+                         "and format of your lectures, as well as frequency of calling on students.")
+
+        st.sidebar.markdown("---")
+        st.sidebar.header("Questions?")
+        st.sidebar.subheader("Contact Department Chair:")
+        st.sidebar.markdown("professor@university.edu")
+        st.sidebar.markdown("(800) 888-1234")
+        st.sidebar.subheader("Contact IT Assistance:")
+        st.sidebar.markdown("IT@university.edu")
+        st.sidebar.markdown("(800) 888-5678")
 
 
 if session_state.password != default_pwd:
