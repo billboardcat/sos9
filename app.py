@@ -12,6 +12,7 @@ default_pwd = "SOSdemopassword123"
 def main():
     # Generate welcome message
     st.image(techpoint_logo, use_column_width=True)
+    st.sidebar.image(step_logo, use_column_width=True)
     st.subheader("Hello, " + session_state.username + "! :smile:")
     start_placeholder = st.empty()
 
@@ -24,7 +25,7 @@ def main():
     if file is None:
         st.sidebar.markdown("---")
         st.sidebar.markdown("<h2 style='color:maroon;'>Students to pay attention to</h2>", unsafe_allow_html=True)
-        st.sidebar.subheader("After you upload your data, we'll identify students that may need attention")
+        st.sidebar.subheader("After you upload your data, we'll identify students that may need more attention")
 
     if file is not None:
         session_state.step1_done = True
@@ -33,7 +34,7 @@ def main():
         st.markdown("---")
         st.subheader("Here's the raw data. Make sure everything's looking right before continuing!")
         myDF = pd.read_csv(file)
-        st.write(myDF.head(5))
+        st.write(myDF)
 
         sidebar_analysis_placeholders = [st.sidebar.empty() for i in range(4)]
 
